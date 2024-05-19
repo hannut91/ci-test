@@ -9,7 +9,7 @@ export default function App() {
   
   return (
     <>
-      <h1>Hell world</h1>
+      <h1>Hell world!</h1>
 
       <div>
         <p>카운트: {count}</p>

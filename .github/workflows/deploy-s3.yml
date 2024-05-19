@@ -1,0 +1,36 @@
+name: Deploy to S3
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.13.1
+          cache: "npm"
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::964037622278:role/ci-test-action-role
+          aws-region: ap-northeast-2
+      - name: Deploy to S3
+        run: aws s3 sync dist s3://ci-test.codesoom.com
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
