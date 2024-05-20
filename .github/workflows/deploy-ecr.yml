@@ -41,4 +41,5 @@ jobs:
         with:
           host: 43.203.247.195
           username: ec2-user
+          key: ${{ secrets.KEY }}
           script: echo "hello"
