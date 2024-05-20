@@ -36,4 +36,8 @@ jobs:
           aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com
           docker tag ci-test:latest 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com/ci-test:latest
           docker push 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com/ci-test:latest
-
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 43.203.247.195
+          script: echo "hello"
