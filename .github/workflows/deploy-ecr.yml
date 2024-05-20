@@ -13,31 +13,32 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.13.1
-          cache: "npm"
-      - name: Install dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Docker build
-        run: docker build -t ci-test .
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: arn:aws:iam::964037622278:role/ci-test-action-role
-          aws-region: ap-northeast-2
-      - name: Docker push
-        run: |
-          aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com
-          docker tag ci-test:latest 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com/ci-test:latest
-          docker push 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com/ci-test:latest
+      # - name: Checkout
+      #   uses: actions/checkout@v4
+      # - name: Use Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 20.13.1
+      #     cache: "npm"
+      # - name: Install dependencies
+      #   run: npm install
+      # - name: Build
+      #   run: npm run build
+      # - name: Docker build
+      #   run: docker build -t ci-test .
+      # - name: configure aws credentials
+      #   uses: aws-actions/configure-aws-credentials@v3
+      #   with:
+      #     role-to-assume: arn:aws:iam::964037622278:role/ci-test-action-role
+      #     aws-region: ap-northeast-2
+      # - name: Docker push
+      #   run: |
+      #     aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com
+      #     docker tag ci-test:latest 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com/ci-test:latest
+      #     docker push 964037622278.dkr.ecr.ap-northeast-2.amazonaws.com/ci-test:latest
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: 43.203.247.195
+          username: ec2-user
           script: echo "hello"
